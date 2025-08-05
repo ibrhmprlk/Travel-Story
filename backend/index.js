@@ -39,6 +39,11 @@ app.use(
 );
 
 app.use(express.json());
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+    console.log('Created uploads directory');
+}
 
 
 app.use("/uploads", express.static("uploads"));
@@ -304,101 +309,113 @@ app.use(express.static(path.join(__dirname, "public")));
 
 //Edit Travel Story
 app.put("/edit-story/:id", authenticateToken, async (req, res) => {
-  const { id } = req.params;
-  const { title, story, visitedLocation, imageUrl, visitedDate } = req.body;
-  const { userId } = req.user;
+  const { id } = req.params;
+  const { title, story, visitedLocation, imageUrl, visitedDate } = req.body;
+  const { userId } = req.user;
 
-  if (!title || !story || !visitedLocation || !Array.isArray(visitedLocation) || !visitedDate) {
+  if (!title || !story || !visitedLocation || !Array.isArray(visitedLocation) || !visitedDate) {
     return res
       .status(400)
       .json({ error: true, message: "All fields are required" });
 }
 
-  let parsedVisitedDate = new Date(visitedDate);
+  let parsedVisitedDate = new Date(visitedDate);
 
-  if (isNaN(parsedVisitedDate.getTime())) {
-    return res
-      .status(400)
-      .json({ error: true, message: "Invalid visited date" });
-  }
+  if (isNaN(parsedVisitedDate.getTime())) {
+    return res
+      .status(400)
+      .json({ error: true, message: "Invalid visited date" });
+  }
 
-  try {
-    const travelStory = await TravelStory.findOne({
-      _id: id,
-      userId: userId,
-    });
+  try {
+    const travelStory = await TravelStory.findOne({
+      _id: id,
+      userId: userId,
+    });
 
-    if (!travelStory) {
-      return res
-        .status(404)
-        .json({ error: true, message: "Travel story not found" });
-    }
+    if (!travelStory) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Travel story not found" });
+    }
+    
+    // Placeholder URL'yi dinamik olarak oluştur
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const placeholderImgUrl = `${protocol}://${host}/assets/placeholder.png`;
 
-    const placeholderImgUrl = "http://localhost:8000/assets/placeholder.png";
+    travelStory.title = title;
+    travelStory.story = story;
+    travelStory.visitedLocation = visitedLocation;
+    travelStory.imageUrl = imageUrl || placeholderImgUrl;
+    travelStory.visitedDate = parsedVisitedDate;
 
-    travelStory.title = title;
-    travelStory.story = story;
-    travelStory.visitedLocation = visitedLocation;
-    travelStory.imageUrl = imageUrl || placeholderImgUrl;
-    travelStory.visitedDate = parsedVisitedDate;
+    await travelStory.save();
 
-    await travelStory.save();
-
-    return res.status(200).json({
-      error: false,
-      message: "Update successful",
-      story: travelStory,
-    });
-  } catch (err) {
-    console.error(err);
-    return res
-      .status(500)
-      .json({ error: true, message: "Server error while updating story" });
-  }
+    return res.status(200).json({
+      error: false,
+      message: "Update successful",
+      story: travelStory,
+    });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ error: true, message: "Server error while updating story" });
+  }
 });
 
 //Delete a travel story
 app.delete("/delete-story/:id", authenticateToken, async (req, res) => {
-  const { id } = req.params;
-  const { userId } = req.user;
+  const { id } = req.params;
+  const { userId } = req.user;
 
-  try {
-    // İlgili hikayeyi kullanıcıya göre bul
-    const travelStory = await TravelStory.findOne({ _id: id, userId: userId });
+  try {
+    // İlgili hikayeyi kullanıcıya göre bul
+    const travelStory = await TravelStory.findOne({ _id: id, userId: userId });
 
-    if (!travelStory) {
-      return res
-        .status(404)
-        .json({ error: true, message: "Travel story not found" });
-    }
+    if (!travelStory) {
+      return res
+        .status(404)
+        .json({ error: true, message: "Travel story not found" });
+    }
 
-    // Hikayeyi veritabanından sil
-    await travelStory.deleteOne();
+    // Hikayeyi veritabanından sil
+    await travelStory.deleteOne();
 
-    // Resim dosyasının adını URL'den çıkar
-    const imageUrl = travelStory.imageUrl;
-    const filename = path.basename(imageUrl);
+    // --- GÜVENLİK İÇİN EK KONTROL BAŞLANGICI ---
+    const imageUrl = travelStory.imageUrl;
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const placeholderImgUrl = `${protocol}://${host}/assets/placeholder.png`;
 
-    // Dosya yolu (uploads klasörü içinde)
-    const filePath = path.join(__dirname, "uploads", filename);
+    // Resmin bir placeholder olup olmadığını kontrol et
+    if (imageUrl && imageUrl !== placeholderImgUrl) {
+      const filename = path.basename(imageUrl);
+      const filePath = path.join(__dirname, "uploads", filename);
 
-    // Resim dosyasını sil
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.error("Failed to delete image file:", err);
-        // İstersen burada hata dönmeyip yine başarılı yanıt da gönderebilirsin
-      }
-    });
+      // Dosyanın varlığını kontrol etmeden silmeye çalışma
+      if (fs.existsSync(filePath)) {
+        fs.unlink(filePath, (err) => {
+          if (err) {
+            console.error("Failed to delete image file:", err);
+          } else {
+            console.log("Image file deleted successfully:", filePath);
+          }
+        });
+      }
+    }
+    // --- GÜVENLİK İÇİN EK KONTROL SONU ---
 
-    return res
-      .status(200)
-      .json({ message: "Travel story deleted successfully" });
-  } catch (err) {
-    console.error(err);
-    return res
-      .status(500)
-      .json({ error: true, message: "Server error while deleting story" });
-  }
+    return res
+      .status(200)
+      .json({ message: "Travel story deleted successfully" });
+  } catch (err) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ error: true, message: "Server error while deleting story" });
+  }
 });
 
 //Update isFavourite
