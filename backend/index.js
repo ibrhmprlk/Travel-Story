@@ -58,7 +58,7 @@ app.post("/create-account", async (req, res) => {
       return res.status(400).json({ error: "User already exists" });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 2);
 
     const user = new User({
       fullName,
@@ -152,7 +152,9 @@ app.post("/image-upload", upload.single("image"), async (req, res) => {
       });
     }
 
-    const imageUrl = `http://localhost:8000/uploads/${req.file.filename}`;
+    const protocol = req.protocol;
+    const host = req.get('host');
+    const imageUrl = `${protocol}://${host}/uploads/${req.file.filename}`;
 
     return res.status(200).json({
       error: false,
@@ -161,7 +163,6 @@ app.post("/image-upload", upload.single("image"), async (req, res) => {
     });
   } catch (error) {
     console.error("Image upload error:", error);
-
     return res.status(500).json({
       error: true,
       message: error.message,
@@ -175,33 +176,20 @@ app.post("/add-travel-story", authenticateToken, async (req, res) => {
   const { title, story, visitedLocation, imageUrl, visitedDate } = req.body;
   const { userId } = req.user;
 
-  console.log({
-    title,
-    story,
-    visitedLocation,
-    imageUrl,
-    visitedDate,
-    visitedLocationIsArray: Array.isArray(visitedLocation),
-  });
-
-  // Validate required fields
   if (
     !title ||
     !story ||
     !visitedLocation ||
     !Array.isArray(visitedLocation) ||
     visitedLocation.length === 0 ||
-    !imageUrl ||
     !visitedDate
   ) {
     return res
       .status(400)
-      .json({ error: true, message: "All fields are required" });
+      .json({ error: true, message: "Title, story, location and date are required." });
   }
 
-  // visitedDate doğrulaması
   const parsedVisitedDate = new Date(visitedDate);
-
   if (isNaN(parsedVisitedDate.getTime())) {
     return res
       .status(400)
@@ -209,11 +197,14 @@ app.post("/add-travel-story", authenticateToken, async (req, res) => {
   }
 
   try {
+    const placeholderImgUrl = `https://${req.get('host')}/assets/placeholder.png`;
+    const finalImageUrl = imageUrl || placeholderImgUrl;
+
     const newStory = new TravelStory({
       title,
       story,
       visitedLocation,
-      imageUrl,
+      imageUrl: finalImageUrl,
       visitedDate: parsedVisitedDate,
       userId,
     });
