@@ -39,7 +39,7 @@ app.use(
 );
 
 app.use(express.json());
-app.options("*", cors()); // Preflight için
+
 
 app.use("/uploads", express.static("uploads"));
 
