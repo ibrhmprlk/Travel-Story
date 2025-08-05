@@ -1,0 +1,229 @@
+html,
+body {
+  min-height: 100vh; /* Sayfa içeriği kadar uzasın */
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  overflow-y: auto; /* Sayfanın kendi scroll'u */
+  background: #fff; /* Arka plan isteğe bağlı */
+}
+
+/* Date button */
+.date-button {
+  display: inline-flex; /* YATAY hizalama */
+  align-items: center; /* Dikey ortala */
+  gap: 6px; /* İkon ile yazı arası boşluk */
+  width: auto; /* Tüm genişliği kaplamasın */
+  padding: 10px 1px;
+  border: 1.7px solid #fff;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+/*
+.date-button:hover {
+  border-color: #05b6d3;
+  background-color: #f0f9fc;
+}
+*/
+
+/* Ana container */
+.container {
+  max-width: 1500px; /* Ortadaki alan genişliği */
+  width: 100%;
+  margin: 20px auto;
+  padding: 10px;
+  padding-bottom: 100px; /* En alta boşluk verildi */
+  box-sizing: border-box;
+  min-height: calc(100vh - 40px); /* Sayfayı doldurması için eklendi */
+}
+
+/* Kartların bulunduğu grid */
+.grid-container {
+  display: flex;
+  flex-wrap: wrap; /* Kartlar yan yana ve alt satıra geçsin */
+  gap: 12px 4px; /* Satır arası 12px, sütun arası 4px */
+  justify-content: center; /* Ortada hizala */
+  width: 100%;
+}
+
+/* Kart */
+.travel-story-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  height: 380px;
+  flex: 0 0 350px; /* Kart sabit 350px genişlikte */
+}
+
+.travel-story-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Kartın üstündeki resim */
+.travel-story-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Kart içeriği */
+.travel-story-card-content {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: auto;
+  max-height: calc(380px - 180px);
+}
+
+/* İç scroll için scrollbar stili */
+.travel-story-card-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.travel-story-card-content::-webkit-scrollbar-thumb {
+  background-color: rgba(5, 182, 211, 0.5);
+  border-radius: 3px;
+}
+
+.travel-story-card-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* İstersen scrollbar stillerini kaldırabilirsin */
+
+/* Eğer body scrollu istiyorsan, container'da overflow veya height ayarları yok! */
+
+/* -------------------- Travel Modal (AddEditTravelStory.css) -------------------- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeInOverlay 0.3s ease forwards;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  width: 85vw;
+  max-width: 700px;
+  height: 75vh;
+  min-height: 400px;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  animation: slideInModal 0.4s ease forwards;
+}
+
+.story-buttons {
+  position: absolute;
+  top: 20px;
+  right: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  z-index: 10;
+}
+
+.story-btn {
+  background-color: #05b6d3;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+  font-size: 13px;
+  user-select: none;
+}
+
+.story-btn:hover {
+  background-color: #038ba4;
+  cursor: pointer;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  user-select: none;
+  z-index: 11;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+.input-label {
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  user-select: none;
+}
+
+.date-selector {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fafafa;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.date-selector:hover {
+  border-color: #05b6d3;
+  background-color: #f0f9fc;
+}
+
+.input-field {
+  width: 100%;
+  font-size: 18px;
+  padding: 8px 12px;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  outline-color: #05b6d3;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-field:focus {
+  border-color: #05b6d3;
+  box-shadow: 0 0 6px #05b6d3aa;
+}

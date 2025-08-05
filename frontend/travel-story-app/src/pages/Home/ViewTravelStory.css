@@ -1,0 +1,161 @@
+/* -------------------- View Travel Story Modal -------------------- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.view-story-container {
+  position: relative; /* Mutlak pozisyonlu iç eleman için referans */
+  background-color: #fff;
+  width: 85vw;
+  max-width: 700px;
+  height: 75vh;
+  min-height: 400px;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  overflow-y: auto;
+  animation: slideInModal 0.4s ease forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Üst kısım: butonlar ve kapama */
+.view-story-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* Çarpı butonu */
+.view-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 26px;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  padding: 0;
+  line-height: 1;
+  z-index: 10;
+}
+
+.view-close-btn:hover {
+  color: #000;
+}
+
+.view-story-btn {
+  background-color: #05b6d3;
+  color: white;
+  border: none;
+  padding: 8px 13px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background-color 0.3s ease;
+  font-size: 12px;
+}
+
+.view-story-btn:hover {
+  background-color: #038ba4;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+/* İçerik kısmı */
+.view-story-content {
+  line-height: 1.6;
+  color: #444;
+  font-size: 15.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.view-story-content h2 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 0px;
+  color: #322e2ee0;
+}
+
+.view-story-content p {
+  margin: 0;
+  font-size: 14.5px;
+  color: #555;
+  text-align: justify;
+}
+
+/* Konum etiketi kutusu */
+.view-story-content .location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #c6f1fb;
+  color: #066b86;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+  width: fit-content;
+}
+
+/* Tarih bilgisi */
+.view-story-content .date-info {
+  font-size: 13.5px;
+  color: #333;
+  margin-top: 4px;
+  display: flex;
+  gap: 6px;
+}
+
+/* Görsel */
+.view-story-image {
+  width: 80%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin: 10px auto;
+  display: block;
+}
+
+/* Açıklama paragrafı */
+.view-story-description {
+  font-size: 14.5px;
+  color: #222;
+  line-height: 1.7;
+  text-align: justify;
+  white-space: pre-line;
+}
+.view-story-btn-group {
+  position: absolute;
+  top: 15px; /* Çarpı butonuyla aynı yatay hizaya getirildi */
+  left: 15px; /* Sol kenardan boşluk */
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

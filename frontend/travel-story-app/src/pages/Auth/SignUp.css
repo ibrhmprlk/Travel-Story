@@ -1,0 +1,261 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+.signup-page {
+  min-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* masaüstünde ortalı */
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
+}
+
+.signup-container {
+  display: flex;
+  width: 900px;
+  max-width: 100%;
+  background: #cdeaf9;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  flex-direction: row;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.signup-left {
+  flex: 1 1 300px;
+  min-width: 300px;
+  background: url("/src/assets/images/bg-image2.webp") center/cover no-repeat;
+  color: white;
+  padding: 60px 50px 40px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.signup-left::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 0;
+}
+
+.signup-left-content {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-left-content p {
+  font-size: 16px;
+  max-width: 300px;
+  line-height: 1.4;
+}
+
+.signup-right {
+  flex: 1 1 300px;
+  min-width: 300px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.signup-right h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.signup-right form {
+  width: 100%;
+  max-width: 100%;
+}
+
+.signup-right input {
+  width: 100%;
+  padding: 12px 45px 12px 15px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.signup-right input.focused {
+  border-color: #05b6d3;
+}
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  user-select: none;
+  color: #555;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 13px;
+  margin: -8px 0 10px 0;
+}
+
+.signup-right .primary {
+  width: 100%;
+  padding: 14px;
+  background-color: #05b6d3;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.signup-right .primary:hover {
+  background-color: #037a9e;
+}
+
+.signup-right .or-text {
+  margin: 15px 0;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+}
+
+.signup-right .secondary {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  border: 2px solid #05b6d3;
+  border-radius: 8px;
+  color: #05b6d3;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.signup-right .secondary:hover {
+  background-color: #e0f4fb;
+}
+
+/* Mobil görünüm */
+@media (max-width: 767px) {
+  .signup-page {
+    align-items: flex-start; /* mobilde yukarı taşı */
+    padding-top: 0px;
+  }
+
+  .signup-container {
+    flex-direction: column;
+  }
+
+  .signup-left {
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .signup-left-content {
+    margin: 0px;
+    padding: 10px;
+  }
+
+  .signup-left-content p {
+    font-size: 14px;
+    max-width: none;
+  }
+
+  .signup-left,
+  .signup-right {
+    min-width: 100%;
+    border-radius: 0;
+    box-sizing: border-box;
+  }
+
+  /* signup-right içeriğini yukarı kaydır */
+  .signup-right {
+    padding-top: 10px; /* eski 40px'den küçült */
+    padding-bottom: 20px; /* alt boşluk biraz koru */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* yukarı hizala */
+  }
+
+  .signup-right h2 {
+    font-size: 20px;
+    margin: 0 0 10px 0; /* alt boşluk biraz artır */
+  }
+
+  .signup-right input,
+  .signup-right .primary,
+  .signup-right .secondary {
+    font-size: 12px;
+    padding: 10px;
+    margin-top: 3px; /* Buton ve inputlar arası boşluk arttı */
+  }
+
+  .toggle-password {
+    font-size: 16px;
+    right: 12px;
+  }
+
+  .error-message {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .signup-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* İçerik alta yaslansın */
+    align-items: center;
+    padding: 20px 20px 60px 20px; /* Alt padding arttırıldı */
+    text-align: center;
+  }
+
+  .signup-left-content {
+    margin-top: 20px; /* Hafif üst boşluk */
+    max-width: 320px; /* Biraz genişlettim */
+    padding-bottom: 10px; /* Alt boşluk */
+    position: relative;
+    z-index: 1; /* Mevcut max-width korunuyor */
+  }
+}
