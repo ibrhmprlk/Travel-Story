@@ -317,11 +317,11 @@ app.put("/edit-story/:id", authenticateToken, async (req, res) => {
   const { title, story, visitedLocation, imageUrl, visitedDate } = req.body;
   const { userId } = req.user;
 
-  if (!title || !story || !visitedLocation || !visitedDate) {
-    return res
-      .status(400)
-      .json({ error: true, message: "All fields are required" });
-  }
+  if (!title || !story || !visitedLocation || !Array.isArray(visitedLocation) || !visitedDate) {
+    return res
+      .status(400)
+      .json({ error: true, message: "All fields are required" });
+}
 
   let parsedVisitedDate = new Date(visitedDate);
 
