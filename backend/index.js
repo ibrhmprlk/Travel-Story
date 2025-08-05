@@ -32,7 +32,7 @@ mongoose
 // CORS ayarını en başta doğru şekilde yapıyoruz:
 app.use(
   cors({
-    origin: "https://ibrahim-travel.netlify.app", // frontend adresini buraya yaz
+    origin: "*", // Tüm domainlerden gelen isteklere izin ver
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
